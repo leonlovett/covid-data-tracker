@@ -1,0 +1,12 @@
+.wrapper {
+    width: max-content;
+    display: flex;
+}
+
+.margin-right {
+    margin-right: 5px;
+}
+
+.larger-text {
+    color: saturate($color: #000000, $amount: 0);
+}

@@ -1,0 +1,48 @@
+<div class="wrap">
+    <mat-card *ngIf="currentData">
+      <mat-card-header>
+        <mat-card-title>{{ currentData.combinedKey }}</mat-card-title>
+        <mat-card-subtitle>
+          Last Updated: {{ currentData.lastUpdate | timeago }}
+        </mat-card-subtitle>
+        <button mat-icon-button>
+          <mat-icon color="warn" (click)="removeCounty()">delete</mat-icon>
+        </button>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item
+            ><div class="list-container">
+              <span>Confirmed:</span>
+              <span>{{ currentData.confirmed | number }}</span>
+            </div></mat-list-item
+          >
+          <mat-list-item
+          ><div class="list-container">
+            <span>Active:</span>
+            <span>{{ currentData.active | number }}</span>
+          </div></mat-list-item
+        >
+        <mat-list-item
+        ><div class="list-container">
+          <span>Recovered:</span>
+          <span>{{ currentData.recovered | number }}</span>
+        </div></mat-list-item
+      >
+          <mat-list-item
+            ><div class="list-container">
+              <span>Deaths:</span
+              ><span>{{ currentData.deaths | number }}</span>
+            </div></mat-list-item
+          >
+        <mat-list-item
+        ><div class="list-container">
+          <span>Death/Confirmed %:</span>
+          <span>{{ currentData.deaths / currentData.confirmed | percent:'1.1-2' }}</span>
+        </div></mat-list-item
+      >
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  

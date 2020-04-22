@@ -1,0 +1,36 @@
+<div *ngIf="counties.length > 0">
+  <div mat-dialog-title>
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Search by County or State"
+        type="text"
+        [formControl]="searchForm"
+      />
+      <button
+        mat-button
+        *ngIf="searchForm"
+        matSuffix
+        mat-icon-button
+        aria-label="Clear"
+        (click)="searchForm.setValue('')"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+  <div mat-dialog-content>
+    <mat-action-list #countiesSelected>
+      <button
+        mat-list-item
+        *ngFor="let county of filteredCounties | async"
+        [mat-dialog-close]="county"
+      >
+        {{ county.combinedKey }}
+      </button>
+    </mat-action-list>
+  </div>
+</div>
+<div *ngIf="counties.length < 1" class="spinner">
+  <mat-spinner></mat-spinner>
+</div>

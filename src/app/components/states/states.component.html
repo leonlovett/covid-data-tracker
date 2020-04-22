@@ -1,0 +1,6 @@
+<div class="wrapper">
+  <app-state-display
+    *ngFor="let view of dataService.userPreferences.states"
+    [searchCriteria]="view"
+  ></app-state-display>
+</div>
