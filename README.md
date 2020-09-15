@@ -25,3 +25,19 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+## Back-End setup
+
+This application uses firebase cloud functions and firestore to manage the backend data. It pulls from the mathdroid api at regular intervals and shapes the data for consupmtion by the front-end.
+
+The code for the cloud functions are in the `functions` folder. You will need to connect the application to your own firebase account or add the functions and database setup to your platform of choice.
+
+## Deploy to Production
+
+This project is setup to use Firebase Hosting. You will need to connect this project to your own Firebase account. After connected all you need to do is run the following commands to deploy.
+```
+npm run build
+firebase deploy
+```
+
+If you would prefer to not host the application with Firebase, you would run `npm run build`, then upload the contents of the dist folder to your server.
