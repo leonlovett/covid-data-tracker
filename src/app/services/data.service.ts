@@ -21,10 +21,17 @@ export class DataService {
     counties: []
   };
 
+  dashboardItems: Array<any> = [];
+
   stateData: Array<any> = [];
   statesArr: Array<any> = [];
   countiesData: Array<any> = [];
   filteredCounties: Observable<string[]>;
+  newItemWatcher: BehaviorSubject<any> = new BehaviorSubject(null);
+  
+  get isWorldActive() {
+    return this.dashboardItems.find(item => item.name === 'world');
+  }
 
   constructor(private http: HttpClient) {}
 

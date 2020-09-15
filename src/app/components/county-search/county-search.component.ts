@@ -12,8 +12,9 @@ import { startWith, map } from 'rxjs/operators';
 })
 export class CountySearchComponent implements OnInit {
   counties: Array<any> = [];
-  filteredCounties: Observable<Array<any>>;
-  constructor(public db: AngularFirestore) {}
+  filteredCounties: Observable<Array<any>> = new Observable();
+  constructor(public db: AngularFirestore) {
+  }
   searchForm = new FormControl();
 
   searchCounties(term: string) {
@@ -26,10 +27,11 @@ export class CountySearchComponent implements OnInit {
   ngOnInit(): void {
     this.db
       .collection('counties', (ref) => ref.orderBy('combinedKey'))
-      .valueChanges()
-      .subscribe((x: Array<any>) => {
-        x.forEach((county) => {
-          county.combinedKey = county.combinedKey.replace(', US', '');
+      .get()
+      .subscribe((x) => {
+        x.docs.forEach((county2) => {
+          const county = county2.data();
+          county['combinedKey'] = county['combinedKey'].replace(', US', '');
           this.counties.push(county);
         });
         this.filteredCounties = this.searchForm.valueChanges.pipe(

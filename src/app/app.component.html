@@ -1,17 +1,33 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-    <span>COVID Data Tracker</span>
+    <span>COVID-19 Data</span>
     <div class="spacer"></div>
     <button
       mat-icon-button
+      [matMenuTriggerFor]="sortOptions"
+      *ngIf="currentRoute.includes('dashboard') && !currentSort"
+    >
+      <mat-icon>sort</mat-icon>
+    </button>
+    <button matTooltip="Reset to Default Sort" mat-stroked-button *ngIf="currentSort && !isMobile" (click)="sortByDefault()">
+      Sorted by: {{ currentSortName }}
+      <mat-icon>{{ sortDirection }}</mat-icon>  
+    </button>
+    <button
+      mat-icon-button
       [matMenuTriggerFor]="addItem"
-      *ngIf="!currentRoute.includes('counties')"
+      *ngIf="
+        !currentRoute.includes('counties') &&
+        !currentRoute.includes('counties/')
+      "
     >
       <mat-icon>add</mat-icon>
     </button>
     <button
       mat-icon-button
-      *ngIf="currentRoute.includes('counties')"
+      *ngIf="
+        currentRoute.includes('counties') && !currentRoute.includes('counties/')
+      "
       (click)="openDialog()"
     >
       <mat-icon>add</mat-icon>
@@ -21,7 +37,13 @@
       <mat-icon>info</mat-icon>
     </button>
   </mat-toolbar-row>
-  <mat-toolbar-row *ngIf="isMobile">
+  <mat-toolbar-row class="full-width-row" *ngIf="currentSort && isMobile">
+    <button matTooltip="Reset to Default Sort" mat-stroked-button (click)="sortByDefault()">
+      Sorted by: {{ currentSortName }} (Tap to Remove)
+      <mat-icon>{{ sortDirection }}</mat-icon>  
+    </button>
+  </mat-toolbar-row>
+  <mat-toolbar-row *ngIf="isMobile && !currentRoute.includes('dashboard')">
     <div class="spacer"></div>
     <app-navigation></app-navigation>
     <div class="spacer"></div>
@@ -44,4 +66,104 @@
       </button>
     </span>
   </span>
+  <span *ngIf="currentRoute.includes('dashboard')">
+    <button mat-menu-item [matMenuTriggerFor]="countries">
+      Country
+    </button>
+    <button mat-menu-item [matMenuTriggerFor]="states">
+      State
+    </button>
+    <button mat-menu-item [matMenuTriggerFor]="counties">
+      County
+    </button>
+    <button
+      mat-menu-item
+      *ngIf="!dataService.isWorldActive"
+      (click)="addWorldData()"
+    >
+      World Data
+    </button>
+  </span>
+</mat-menu>
+
+<mat-menu #states="matMenu">
+  <button
+    *ngFor="let state of dataService.statesArr"
+    (click)="addNewItem('state', state)"
+    mat-menu-item
+  >
+    {{ state }}
+  </button>
+</mat-menu>
+
+<mat-menu #countries="matMenu">
+  <button
+    *ngFor="let country of dataService.countryList"
+    (click)="addNewItem('country', country)"
+    mat-menu-item
+  >
+    {{ country.name }}
+  </button>
+</mat-menu>
+
+<mat-menu #counties="matMenu">
+  <button mat-menu-item (click)="openDialog()">Search for a County</button>
+</mat-menu>
+
+<mat-menu #sortOptions="matMenu">
+  <button mat-menu-item [matMenuTriggerFor]="confirmedSort">Confirmed</button>
+  <button mat-menu-item [matMenuTriggerFor]="deathsSort">Deaths</button>
+  <!-- <button mat-menu-item [matMenuTriggerFor]="recoveredSort">Recovered</button> -->
+  <!-- <button mat-menu-item [matMenuTriggerFor]="rdRatioSort">
+    Recovered/Death Ratio
+  </button> -->
+  <button mat-menu-item [matMenuTriggerFor]="dcPercentSort">
+    Death/Confirmed %
+  </button>
+  <button mat-menu-item (click)="sortAlpha()">Alphabetical</button>
+</mat-menu>
+
+<mat-menu #confirmedSort="matMenu">
+  <button mat-menu-item (click)="sortData('confirmed ascending')">
+    Ascending
+  </button>
+  <button mat-menu-item (click)="sortData('confirmed descending')">
+    Descending
+  </button>
+</mat-menu>
+
+<mat-menu #deathsSort="matMenu">
+  <button mat-menu-item (click)="sortData('deaths ascending')">
+    Ascending
+  </button>
+  <button mat-menu-item (click)="sortData('deaths descending')">
+    Descending
+  </button>
+</mat-menu>
+
+<mat-menu #recoveredSort="matMenu">
+  <button mat-menu-item (click)="sortData('recovered ascending')">
+    Ascending
+  </button>
+  <button mat-menu-item (click)="sortData('recovered descending')">
+    Descending
+  </button>
+</mat-menu>
+
+<mat-menu #rdRatioSort="matMenu">
+  <button mat-menu-item (click)="sortData('rdratio ascending')">
+    Ascending
+  </button>
+  <button mat-menu-item (click)="sortData('rdratio descending')">
+    Descending
+  </button>
+</mat-menu>
+
+<mat-menu #dcPercentSort="matMenu">
+  <button mat-menu-item (click)="sortData('dcpercent ascending')">
+    Ascending
+  </button>
+  <button mat-menu-item (click)="sortData('dcpercent descending')">
+    Descending
+  </button>
 </mat-menu>

@@ -1,5 +1,5 @@
 <div class="wrapper">
-  <button class="margin-right" mat-raised-button color="accent" [routerLink]="'countries'" [routerLinkActive]="'larger-text'">
+  <!-- <button class="margin-right" mat-raised-button color="accent" [routerLink]="'countries'" [routerLinkActive]="'larger-text'">
     Countries
   </button>
   <div class="spacer"></div>
@@ -7,5 +7,6 @@
     States
   </button>
   <div class="spacer"></div>
-  <button mat-raised-button color="accent" [routerLink]="'counties'" [routerLinkActive]="'larger-text'">Counties</button>
+  <button mat-raised-button color="accent" [routerLink]="'counties'" [routerLinkActive]="'larger-text'">Counties</button> -->
+  <button *ngIf="!currentUrl.includes('dashboard')" mat-raised-button color="accent" [routerLink]="'dashboard'" [routerLinkActive]="'larger-text'">Dashboard</button>
 </div>
